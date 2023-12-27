@@ -1,4 +1,5 @@
 console.log("femiiiii")
+console.log("errd")
 import { initializeApp } from 'firebase/app'
 import {
   getFirestore, collection, onSnapshot,
@@ -10,7 +11,8 @@ import {
 } from 'firebase/firestore'
 
 import {
-  getAuth, createUserWithEmailAndPassword
+  getAuth, createUserWithEmailAndPassword,
+  signOut, signInWithEmailAndPassword
 } from "firebase/auth"
 
 const firebaseConfig = {
@@ -126,3 +128,37 @@ createUserWithEmailAndPassword(auth, email, password)
       console.log("this is",error.message)
     })
 })
+
+//logging in and out
+
+const logout = document.querySelector(".logout")
+
+logout.addEventListener("click", function(){
+  signOut(auth)
+    .then(()=>{
+      console.log("the user signed out")
+    })
+    .catch((error)=>{
+      console.log(error.message)
+    })
+})
+
+
+const loginForm = document.querySelector(".login")
+
+loginForm.addEventListener("submit", (e)=>{
+  e.preventDefault()
+
+  const email = loginForm.email.value;
+  const password = loginForm.password.value
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then((cred)=>{
+      console.log("the user signed in: ", cred.user )
+    })
+    .catch((err)=>{
+      console.log(err.message)
+    })
+
+})
+
