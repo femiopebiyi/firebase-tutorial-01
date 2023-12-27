@@ -6,8 +6,12 @@ import {
   query, where,
   orderBy,
   serverTimestamp,
-  getDoc
+  getDoc, updateDoc
 } from 'firebase/firestore'
+
+import {
+  getAuth
+} from "firebase/auth"
 
 const firebaseConfig = {
     apiKey: "AIzaSyB2zx1CNbUG3Z1lWC-GBr6nF0cNHxHJxpw",
@@ -23,7 +27,7 @@ initializeApp(firebaseConfig)
 
 // init services
 const db = getFirestore()
-
+const auth = getAuth()
 // collection ref
 const colRef = collection(db, 'books')
 
@@ -81,4 +85,21 @@ const docRef = doc(db, 'books', 'SYZapYeKCradITksKtO5')
 console.log("{bola")
 onSnapshot(docRef, (doc)=>{
   console.log(doc.data(), doc.id)
+})
+
+//updating a document
+
+const updateForm = document.querySelector(".update")
+
+updateForm.addEventListener("submit", (e)=>{
+  e.preventDefault()
+
+  const docRef = doc(db, 'books', updateForm.id.value)
+
+  updateDoc(docRef, {
+    title: "updated title"
+  })
+    .then(()=>{
+      updateForm.reset()
+    })
 })
