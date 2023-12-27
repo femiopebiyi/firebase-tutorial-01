@@ -10,7 +10,7 @@ import {
 } from 'firebase/firestore'
 
 import {
-  getAuth
+  getAuth, createUserWithEmailAndPassword
 } from "firebase/auth"
 
 const firebaseConfig = {
@@ -101,5 +101,28 @@ updateForm.addEventListener("submit", (e)=>{
   })
     .then(()=>{
       updateForm.reset()
+    })
+})
+
+
+//AUTH
+
+// signing up users
+
+const signUpForm = document.querySelector(".signup")
+
+signUpForm.addEventListener("submit", (e)=>{
+  e.preventDefault()
+
+const email = signUpForm.email.value;
+const password = signUpForm.password.value
+
+createUserWithEmailAndPassword(auth, email, password)
+  .then((credential)=>{
+    console.log("user created: ",credential.user)
+    signUpForm.reset()
+  })
+    .catch((error)=>{
+      console.log("this is",error.message)
     })
 })
